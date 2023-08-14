@@ -2,9 +2,11 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { Member } from '../models/member';
-import { map, of } from 'rxjs';
+import { map, of, take } from 'rxjs';
 import { PaginatedResult } from '../models/pagination';
 import { UserParams } from '../models/userParams ';
+import { AccountService } from './account.service';
+import { User } from '../models/user';
 
 @Injectable({
   providedIn: 'root'
@@ -13,8 +15,35 @@ export class MemberService {
   baseUrl = environment.apiUrl;
   members: Member[] = [];
   memberCache = new Map();
+  user?: User | undefined;
+  userParams: UserParams | undefined;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient,  private accountService: AccountService) {
+    this.accountService.currentUser$.pipe(take(1)).subscribe({
+      next: user => {
+        if (user) {
+          this.userParams = new UserParams(user);
+          this.user = user;
+        }
+      }
+    })
+  }
+
+  getUserParams() {
+    return this.userParams;
+  }
+
+  setUserParams(userParams: UserParams) {
+    this.userParams = userParams;
+  }
+
+  resetUserParams() {
+    if (this.user) {
+      this.userParams = new UserParams(this.user);
+      return this.userParams;
+    }
+    return;
+  }
 
   getMembers(userParams: UserParams) {
     const response = this.memberCache.get(Object.values(userParams).join('-'));
