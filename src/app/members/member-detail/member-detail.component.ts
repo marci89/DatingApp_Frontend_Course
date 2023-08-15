@@ -28,13 +28,18 @@ export class MemberDetailComponent {
 
   constructor(
     private memberService: MemberService,
-     private route: ActivatedRoute,
-       private messageService: MessageService)
-       {
+    private route: ActivatedRoute,
+    private messageService: MessageService) {
   }
 
   ngOnInit(): void {
     this.loadMember();
+
+    this.route.queryParams.subscribe({
+      next: params => {
+        params['tab'] && this.selectTab(params['tab'])
+      }
+    })
   }
 
   loadMember() {
@@ -70,7 +75,7 @@ export class MemberDetailComponent {
   }
 
   loadMessages() {
-    if (this.member){
+    if (this.member) {
       this.messageService.getMessageThread(this.member.userName).subscribe({
         next: messages => this.messages = messages
       })
