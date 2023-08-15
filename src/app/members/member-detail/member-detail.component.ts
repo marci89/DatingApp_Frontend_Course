@@ -62,7 +62,7 @@ export class MemberDetailComponent {
 
   onTabActivated(data: TabDirective) {
     this.activeTab = data;
-    if (this.activeTab.heading === 'Messages' && this.user) {
+    if (this.activeTab.heading === 'Messages') {
       this.loadMessages();
     }
   }
