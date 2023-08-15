@@ -1,10 +1,10 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ViewChild } from '@angular/core';
 import { Message } from 'src/app/models/message';
 import { MessageService } from 'src/app/services/messages.service';
 import { BehaviorSubject } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { TimeagoModule } from 'ngx-timeago';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-member-messages',
@@ -14,12 +14,24 @@ import { FormsModule } from '@angular/forms';
   imports: [CommonModule, TimeagoModule, FormsModule]
 })
 export class MemberMessagesComponent {
+  @ViewChild('messageForm') messageForm?: NgForm;
   @Input() username?: string;
   @Input() messages: Message[] = [];
+  messageContent = '';
 
 
-  constructor() { }
+  constructor(public messageService: MessageService) { }
 
   ngOnInit(): void {
+  }
+
+  sendMessage() {
+    if (!this.username) return;
+    this.messageService.sendMessage(this.username, this.messageContent).subscribe({
+      next: message => {
+        this.messages.push(message)
+        this.messageForm?.reset();
+      }
+    })
   }
 }
