@@ -18,7 +18,7 @@ export class MemberService {
   user?: User | undefined;
   userParams: UserParams | undefined;
 
-  constructor(private http: HttpClient,  private accountService: AccountService) {
+  constructor(private http: HttpClient, private accountService: AccountService) {
     this.accountService.currentUser$.pipe(take(1)).subscribe({
       next: user => {
         if (user) {
@@ -91,6 +91,14 @@ export class MemberService {
 
   deletePhoto(photoId: number) {
     return this.http.delete(this.baseUrl + 'user/delete-photo/' + photoId);
+  }
+
+  addLike(username: string) {
+    return this.http.post(this.baseUrl + 'likes/' + username, {})
+  }
+
+  getLikes(predicate: string) {
+    return this.http.get(this.baseUrl + 'likes?predicate=' + predicate);
   }
 
   private getPaginatedResult<T>(url: string, params: HttpParams) {
