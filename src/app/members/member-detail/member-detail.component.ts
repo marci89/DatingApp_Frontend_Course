@@ -20,7 +20,7 @@ import { User } from 'src/app/models/user';
 })
 export class MemberDetailComponent {
   @ViewChild('memberTabs', { static: true }) memberTabs?: TabsetComponent;
-  member: Member | undefined;
+  member: Member = {} as Member;
   images: GalleryItem[] = [];
   activeTab?: TabDirective;
   messages: Message[] = [];
@@ -33,25 +33,18 @@ export class MemberDetailComponent {
   }
 
   ngOnInit(): void {
-    this.loadMember();
+
+    this.route.data.subscribe({
+      next: data => this.member = data['member']
+    })
 
     this.route.queryParams.subscribe({
       next: params => {
         params['tab'] && this.selectTab(params['tab'])
       }
     })
-  }
 
-  loadMember() {
-    const username = this.route.snapshot.paramMap.get('username');
-    if (!username) return;
-
-    this.memberService.getMember(username).subscribe({
-      next: member => {
-        this.member = member;
-        this.getImages();
-      }
-    });
+    this.getImages();
   }
 
   getImages() {
