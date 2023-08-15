@@ -8,7 +8,7 @@ import { AdminService } from 'src/app/services/admin.service';
   styleUrls: ['./user-management.component.css']
 })
 export class UserManagementComponent implements OnInit {
-  users: User[] = [];
+  users: any[] = [];
 
   constructor(private adminService: AdminService) { }
 
