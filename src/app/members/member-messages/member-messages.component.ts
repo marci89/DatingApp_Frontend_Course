@@ -15,19 +15,11 @@ import { FormsModule } from '@angular/forms';
 })
 export class MemberMessagesComponent {
   @Input() username?: string;
-  messages: Message[] = [];
+  @Input() messages: Message[] = [];
 
-  constructor(public messageService: MessageService) { }
+
+  constructor() { }
 
   ngOnInit(): void {
-    this.loadMessages();
-  }
-
-  loadMessages() {
-    if (this.username){
-      this.messageService.getMessageThread(this.username).subscribe({
-        next: messages => this.messages = messages
-      })
-    }
   }
 }
