@@ -10,6 +10,7 @@ import { MemberMessagesComponent } from '../member-messages/member-messages.comp
 import { MessageService } from 'src/app/services/messages.service';
 import { Message } from 'src/app/models/message';
 import { User } from 'src/app/models/user';
+import { PresenceService } from 'src/app/services/presence.service';
 
 @Component({
   selector: 'app-member-detail',
@@ -29,7 +30,8 @@ export class MemberDetailComponent {
   constructor(
     private memberService: MemberService,
     private route: ActivatedRoute,
-    private messageService: MessageService) {
+    private messageService: MessageService,
+    public presenceService: PresenceService) {
   }
 
   ngOnInit(): void {
