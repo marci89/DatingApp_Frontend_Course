@@ -32,8 +32,8 @@
       <tbody class="align-middle">
           <tr [hidden]="loading" *ngFor="let message of messages"
           routerLink="{{container === 'Outbox'
-          ? '/member/' + message.recipientUsername
-          : '/member/' + message.senderUsername}}" [queryParams]="{tab: 'Messages'}">
+          ? '/members/' + message.recipientUsername
+          : '/members/' + message.senderUsername}}" [queryParams]="{tab: 'Messages'}">
               <td>{{message.content}}</td>
               <td>
                   <div *ngIf="container === 'Outbox'">

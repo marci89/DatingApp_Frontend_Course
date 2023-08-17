@@ -11,15 +11,16 @@ import { ToastrService } from 'ngx-toastr';
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
-
   constructor(private router: Router, private toastr: ToastrService) {}
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     return next.handle(request).pipe(
       catchError(error => {
+
         if (error) {
           switch (error.status) {
             case 400:
+
               if (error.error.errors) {
                 const modelStateErrors = [];
                 for (const key in error.error.errors) {
@@ -28,9 +29,18 @@ export class ErrorInterceptor implements HttpInterceptor {
                   }
                 }
                 throw modelStateErrors.flat();
-              } else {
-                this.toastr.error(error.error, error.status);
               }
+                else if(error.error){
+                  const modelStateErrors = [];
+                  for (const item of error.error) {
+                    modelStateErrors.push(item.description);
+                  }
+                  throw modelStateErrors;
+              }
+              else
+                this.toastr.error(error.error, error.status);
+
+
               break;
             case 401:
               this.toastr.error('Unauthorised', error.status);
