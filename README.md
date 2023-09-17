@@ -13,6 +13,7 @@ This is an Angular project. It was an udemy course about dating app. This is the
 - stand alone components
 - JWT token auth implementation
 
+
 ## Setup
 
 - You need to install Node.js.
